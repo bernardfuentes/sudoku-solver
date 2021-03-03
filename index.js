@@ -61,6 +61,7 @@ function checkCell(i,j) {
                 cell.disabled = false;
             }
         });
+        document.getElementById('resolve').disabled = true
     } else {
         const id = i + '-' + j;
         console.log(id);
