@@ -56,12 +56,11 @@ function checkCell(i,j) {
     this.getValuesFromBoard();
     if (this.isValid([i,j])) {
         Array.from(document.getElementsByClassName('choice')).map((cell) => {
-            console.log(cell.disabled);
             if (cell.disabled) {
                 cell.disabled = false;
             }
         });
-        document.getElementById('resolve').disabled = true
+        document.getElementById('resolve').classList.remove('opacity-50', 'cursor-not-allowed');
     } else {
         const id = i + '-' + j;
         console.log(id);
@@ -70,6 +69,7 @@ function checkCell(i,j) {
                 cell.disabled = true;
             }
         });
+        document.getElementById('resolve').classList.add('opacity-50', 'cursor-not-allowed');
     }
 }
 
