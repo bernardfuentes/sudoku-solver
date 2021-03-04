@@ -15,25 +15,29 @@ function drawGrid() {
     document.getElementById('container').innerHTML = text;
 }
 
-function isValid(coordinates) {
-    const value = board[coordinates[0]][coordinates[1]];
+function isValid(localBoard, coordinates, value) {
+    let val = value;
+    if (value === undefined) {
+        val = localBoard[coordinates[0]][coordinates[1]]; 
+    }
 
     for (let i = 0; i < 9; i++) {
         // Checking row
-        if (board[coordinates[0]][i] === value && coordinates[1] !== i && value !== 0) {
+        if (localBoard[coordinates[0]][i] === val && coordinates[1] !== i && val !== 0) {
             return false
         }
         // Checking column
-        if (board[i][coordinates[0]] === value && coordinates[0] !== i && value !== 0) {
+        if (localBoard[i][coordinates[1]] === val && coordinates[0] !== i && val !== 0) {
             return false
         }
     }
 
     // Checking 3x3 box
     const boxCoordinates = [Math.floor(coordinates[0]/3), Math.floor(coordinates[1]/3)];
-    for (let i = boxCoordinates[0]; i < boxCoordinates[0] + 3; i++) {
-        for (let j = boxCoordinates[1]; j < boxCoordinates[1] + 3; j++) {
-            if (board[i][j] === value && (coordinates[0] !== i || coordinates[1] !== j) && value !== 0) {
+
+    for (let i = boxCoordinates[0]*3; i < boxCoordinates[0]*3 + 3; i++) {
+        for (let j = boxCoordinates[1]*3; j < boxCoordinates[1]*3 + 3; j++) {
+            if (localBoard[i][j] === val && (coordinates[0] !== i || coordinates[1] !== j) && val !== 0) {
                 return false
             }
         } 
@@ -49,12 +53,11 @@ function getValuesFromBoard() {
         const coordinates = cell.name.split('-');
         board[coordinates[0]][coordinates[1]] = cell.value === '' ? 0 : parseInt(cell.value); 
     });
-    console.log(board);
 }
 
 function checkCell(i,j) {
-    this.getValuesFromBoard();
-    if (this.isValid([i,j])) {
+    getValuesFromBoard();
+    if (isValid(board,[i,j])) {
         Array.from(document.getElementsByClassName('choice')).map((cell) => {
             if (cell.disabled) {
                 cell.disabled = false;
@@ -63,7 +66,6 @@ function checkCell(i,j) {
         document.getElementById('resolve').classList.remove('opacity-50', 'cursor-not-allowed');
     } else {
         const id = i + '-' + j;
-        console.log(id);
         Array.from(document.getElementsByClassName('choice')).map((cell) => {
             if (cell.name !== id) {
                 cell.disabled = true;
@@ -71,6 +73,17 @@ function checkCell(i,j) {
         });
         document.getElementById('resolve').classList.add('opacity-50', 'cursor-not-allowed');
     }
+}
+
+function nextEmptyCell(localBoard) {
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            if (localBoard[i][j] === 0) {
+                return [i,j]
+            }
+        }
+    }
+    return false
 }
 
 function reset() {
@@ -81,7 +94,32 @@ function reset() {
 }
 
 function resolve() {
-    this.getValuesFromBoard();
+    getValuesFromBoard();
+    if (backTrakResolution(board)) {
+        console.log(board);
+    }
+}
+
+function backTrakResolution(localBoard) {
+    cell = nextEmptyCell(localBoard);
+    console.log(cell);
+
+    if (cell === false) {
+        return true
+    } 
+
+    for (let i = 1; i < 10; i++) {
+        if (isValid(localBoard, cell, i)) {
+            localBoard[cell[0]][cell[1]] = i;
+            if (backTrakResolution(localBoard)) {
+                return true;
+            }
+
+            localBoard[cell[0]][cell[1]] = 0;
+        }
+    }
+
+    return false
 }
 
 let board = Array.from(Array(9), () => new Array(9));
