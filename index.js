@@ -101,8 +101,8 @@ function resolve() {
 }
 
 function backTrakResolution(localBoard) {
-    cell = nextEmptyCell(localBoard);
-    console.log(cell);
+    let cell = nextEmptyCell(localBoard);
+    
 
     if (cell === false) {
         return true
@@ -114,7 +114,7 @@ function backTrakResolution(localBoard) {
             if (backTrakResolution(localBoard)) {
                 return true;
             }
-
+            console.log(cell, i);
             localBoard[cell[0]][cell[1]] = 0;
         }
     }

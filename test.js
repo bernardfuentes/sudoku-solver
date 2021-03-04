@@ -57,6 +57,7 @@ function nextEmptyCell(localBoard) {
 
 function solveSudoku(matrix) {
     const cell = nextEmptyCell(matrix);
+    console.log(cell);
 
     // no more "blank" spaces means the puzzle is solved
     if (cell === false) {
