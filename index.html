@@ -8,9 +8,14 @@
 <body>
 <div id="container">
 </div>
+<div id="commands">
 <button type="button" class="bg-blue-500 p-2" onclick="reset()">Reset</button>
+<button type="button" class="bg-yellow-500 p-2" onclick="random()">Random</button>
 <button type="button" id="resolve" class="bg-green-500 p-2" onclick="resolve()">Resolve</button>
+</div>
+<div id="message">
 
+</div>
 </body>
 </html>
 <script type="text/javascript" src="./index.js"></script>
@@ -38,8 +43,15 @@
         border-bottom:solid ;
     }
 
-    input {
+    td > input {
         width:12px;
+    }
 
+    input.bold {
+        font-weight: bold;
+    }
+
+    input[type="text"]:disabled {
+        background: #FFFFFF;
     }
 </style>
