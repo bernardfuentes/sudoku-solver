@@ -3,9 +3,9 @@ function drawGrid() {
     for (let i=0; i<=8; i++) {
         text+="<tr class=''>";
         for (let j=0; j<=8; j++) {
-            text+="<td class='box-border h-9 w-9 pl-4 border-4'>";
+            text+="<td>";
             const id = i + '-' + j;
-            text+="<input class='choice w-6' type='text' onchange='checkCell(" + i + "," + j + ")' maxlength='1' size='1' id='" + 
+            text+="<input class='choice' type='text' onchange='checkCell(" + i + "," + j + ")' maxlength='1' size='1' id='" +
                 id + "' name='" + id + "' value='' />";
             text+="</td>";
         }
@@ -55,6 +55,15 @@ function getValuesFromBoard() {
     });
 }
 
+function pushValuesToBoard(localBoard) {
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            const id = i + '-' + j;
+            document.getElementById(id).value = localBoard[i][j]
+        }
+    }
+}
+
 function checkCell(i,j) {
     getValuesFromBoard();
     if (isValid(board,[i,j])) {
@@ -96,7 +105,7 @@ function reset() {
 function resolve() {
     getValuesFromBoard();
     if (backTrakResolution(board)) {
-        console.log(board);
+        pushValuesToBoard(board)
     }
 }
 
