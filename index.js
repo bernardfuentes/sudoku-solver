@@ -18,7 +18,7 @@ function drawGrid() {
 /**
  * Creates every possible choice for initial board
  *
- * @return { boolean } Either we can go ahead with a Sudoku solution
+ * @return { boolean } Whether we can go ahead with a Sudoku solution
  */
 function createChoices() {
     for (let i = 0; i < 9; i++) {
@@ -47,7 +47,7 @@ function createChoices() {
  *
  * @param {array} coordinates [row, column] of the current board cell.
  * @param {number} value Tried value at that position. Could be undefined when we check the initial board.
- * @return { boolean } Is the position allow its value or new value
+ * @return { boolean } Is the position allowing its value or a new one.
  */
 function isValid(coordinates, value) {
     let val = value;
@@ -102,6 +102,13 @@ function pushValuesToBoard() {
     }
 }
 
+/**
+ * Check if the last manual entry respect all constrains. Display a message
+ *
+ * @param {number} i Entry row.
+ * @param {number} j Entry column.
+ * @return { boolean } Is the position is correct
+ */
 function checkCell(i,j) {
     getValuesFromBoard();
     if (isValid([i,j])) {
@@ -111,7 +118,8 @@ function checkCell(i,j) {
             }
         });
         document.getElementById('resolve').classList.remove('opacity-50', 'cursor-not-allowed');
-        displayMessage('')
+        displayMessage('');
+        return true
     } else {
         const id = i + '-' + j;
         Array.from(document.getElementsByClassName('choice')).map((cell) => {
@@ -120,7 +128,8 @@ function checkCell(i,j) {
             }
         });
         document.getElementById('resolve').classList.add('opacity-50', 'cursor-not-allowed');
-        displayMessage('We can\'t solve such sudoku. Please change the last entry.')
+        displayMessage('We can\'t solve such sudoku. Please change the last entry.');
+        return false;
     }
 }
 
