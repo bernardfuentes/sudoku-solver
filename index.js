@@ -15,6 +15,40 @@ function drawGrid() {
     document.getElementById('container').innerHTML = text;
 }
 
+/**
+ * Creates every possible choice for initial board
+ *
+ * @return { boolean } Either we can go ahead with a Sudoku solution
+ */
+function createChoices() {
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            let choicesArray = [];
+            for (let c = 1; c < 10; c++) {
+                if (isValid([i,j], c)) {
+                    choicesArray.push(c);
+                }
+            }
+            if (choicesArray.length === 0) {
+                return false;
+            }
+            for (let i = choicesArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [choicesArray[i], choicesArray[j]] = [choicesArray[j], choicesArray[i]];
+            }
+            choices[i][j] = choicesArray
+        }
+    }
+    return true
+}
+
+/**
+ * Check constrains by row / column / boxes 3x3
+ *
+ * @param {array} coordinates [row, column] of the current board cell.
+ * @param {number} value Tried value at that position. Could be undefined when we check the initial board.
+ * @return { boolean } Is the position allow its value or new value
+ */
 function isValid(coordinates, value) {
     let val = value;
     if (value === undefined) {
@@ -136,24 +170,28 @@ function random() {
 }
 
 function resolve() {
-    displayMessage('')
+    displayMessage('');
     getValuesFromBoard();
-    if (backTrakResolution()) {
-        pushValuesToBoard()
+    if (createChoices()) {
+        if (backTrackSolve()) {
+            pushValuesToBoard();
+            return;
+        }
     }
+    displayMessage('No solution available for that initial board.')
 }
 
-function backTrakResolution() {
+function backTrackSolve() {
     let cell = nextEmptyCell();
-
     if (cell === false) {
         return true
     } 
 
-    for (let i = 1; i < 10; i++) {
-        if (isValid(cell, i)) {
-            board[cell[0]][cell[1]] = i;
-            if (backTrakResolution()) {
+    for (let i = 0; i < choices[cell[0]][cell[1]].length; i++) {
+        item = choices[cell[0]][cell[1]][i];
+        if (isValid(cell, item)) {
+            board[cell[0]][cell[1]] = item;
+            if (backTrackSolve()) {
                 return true;
             }
             board[cell[0]][cell[1]] = 0;
@@ -164,6 +202,8 @@ function backTrakResolution() {
 }
 
 let board = Array.from(Array(9), () => new Array(9));
+
+let choices = Array.from(Array(9), () => new Array(9));
 
 drawGrid();
 
