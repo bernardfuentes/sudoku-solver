@@ -56,6 +56,7 @@ function reset() {
         cell.disabled = false;
     });
     displayMessage('');
+    getValuesFromUIBoard();
     return true;
 }
 
@@ -67,10 +68,10 @@ function reset() {
  */
 function resolve() {
     displayMessage('');
-    getValuesFromBoard();
+    getValuesFromUIBoard();
     if (createChoices()) {
         if (backTrackSolve()) {
-            pushValuesToBoard();
+            pushValuesToUIBoard();
             return true;
         }
     }
@@ -83,7 +84,7 @@ function resolve() {
  *
  * @return { boolean } true Optional
  */
-function getValuesFromBoard() {
+function getValuesFromUIBoard() {
     Array.from(document.getElementsByClassName('choice')).map((cell) => {
         const coordinates = cell.name.split('-');
         document.getElementById(cell.name).classList.remove('bold');
@@ -100,7 +101,7 @@ function getValuesFromBoard() {
  *
  * @return { boolean } true Optional
  */
-function pushValuesToBoard() {
+function pushValuesToUIBoard() {
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             const id = i + '-' + j;
@@ -116,7 +117,6 @@ function pushValuesToBoard() {
  * @return { boolean } Can we start the solving process, or there is not a solution.
  */
 function createChoices() {
-    console.log(board);
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             let choicesArray = [];
@@ -146,7 +146,7 @@ function createChoices() {
  * @return { boolean } Is the position correct?
  */
 function checkCell(i,j) {
-    getValuesFromBoard();
+    getValuesFromUIBoard();
     if (isValid([i,j])) {
         Array.from(document.getElementsByClassName('choice')).map((cell) => {
             if (cell.disabled) {
@@ -233,25 +233,34 @@ function nextEmptyCell() {
  * @return { boolean } Optional.
  */
 function random() {
+    createChoices();
     let emptyCells = [];
     Array.from(document.getElementsByClassName('choice')).map((cell) => {
-        const coordinates = cell.name.split('-');
+        let coordinates = cell.name.split('-');
         document.getElementById(cell.name).classList.remove('bold');
-        if (board[coordinates[0]][coordinates[1]] !== '') {
+        if (board[coordinates[0]][coordinates[1]] === undefined 
+            || board[coordinates[0]][coordinates[1]] === '') {
             emptyCells.push(coordinates);
         }
     });
-    const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    let val = 0;
-    let first = true;
-    while (first === true || !isValid(randomCell, val)) {
-        first = false;
-        val = Math.floor((Math.random() * 9) + 1);
+    for (let i = emptyCells.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [emptyCells[i], emptyCells[j]] = [emptyCells[j], emptyCells[i]];
     }
-    const id = randomCell[0] + '-' + randomCell[1];
-    document.getElementById(id).value = val;
-    getValuesFromBoard()
-
+    while (emptyCells.length) {
+        let randomCell = emptyCells[0];
+        for (let i = 0; i < choices[randomCell[0]][randomCell[1]].length; i++) {
+            const item = choices[randomCell[0]][randomCell[1]][i];
+            if (isValid(randomCell, item)) {
+                const id = randomCell[0] + '-' + randomCell[1];
+                document.getElementById(id).value = item;
+                getValuesFromUIBoard();
+                return true;
+            }
+        }
+        emptyCells = emptyCells.shift();
+    }
+    return false
 }
 
 /**
@@ -266,7 +275,7 @@ function backTrackSolve() {
     } 
 
     for (let i = 0; i < choices[cell[0]][cell[1]].length; i++) {
-        item = choices[cell[0]][cell[1]][i];
+        const item = choices[cell[0]][cell[1]][i];
         if (isValid(cell, item)) {
             board[cell[0]][cell[1]] = item;
             if (backTrackSolve()) {
