@@ -12,10 +12,24 @@ body {
     font-size: 30px;
 }
 
-table {
+.board {
     margin:1.5em auto;
     border: 2px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 25%;
 }
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 25%;
+}
+
+.cell {
+
+}
+
 td {
     height:50px;
     width:50px;

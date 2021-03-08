@@ -21,19 +21,19 @@ displayMessage('Add some values manually or randomly');
  * @return { boolean } Optional.
  */
 function drawGrid() {
-    let text= "<table class=''>";
+    let text= "<div class='board'>";
     for (let i=0; i<=N*N-1; i++) {
-        text+="<tr class=''>"
+        text+="<div class='row'>"
         for (let j=0; j<=N*N-1; j++) {
-            text+="<td>";
+            text+="<div class='cell'>";
             const id = i + '-' + j;
             text+="<input class='choice' type='text' onchange='checkCell(" + i + "," + j
                 + ")' maxlength='1' size='1' id='" + id + "' name='" + id + "' value='' />";
-            text+="</td>";
+            text+="</div>";
         }
-        text+="</tr>";
+        text+="</div>";
     }
-    text+="</table>";
+    text+="</div>";
     document.getElementById('board').innerHTML = text;
     return true;
 }
