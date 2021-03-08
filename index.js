@@ -2,9 +2,12 @@
  * Main execution.
  *
  */
-let board = Array.from(Array(9), () => new Array(9));
-let choices = Array.from(Array(9), () => new Array(9));
-const N = 4;
+// Box size and number of boxes
+const N = 3;
+
+let board = Array.from(Array(N*N), () => new Array(N*N));
+let choices = Array.from(Array(N*N), () => new Array(N*N));
+
 
 const itemUsed = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','0'];
 
@@ -13,7 +16,7 @@ drawGrid();
 displayMessage('Add some values manually or randomly');
 
 /**
- * Draw 81 cells of the UI board
+ * Draw N*N*N*N cells of the UI board
  *
  * @return { boolean } Optional.
  */
@@ -186,7 +189,7 @@ function isValid(coordinates, value) {
         val = board[coordinates[0]][coordinates[1]]; 
     }
 
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < N*N; i++) {
         // Checking row
         if (board[coordinates[0]][i] === val && coordinates[1] !== i && val !== '') {
             return false
@@ -197,7 +200,7 @@ function isValid(coordinates, value) {
         }
     }
 
-    // Checking 3x3 box
+    // Checking NxN box
     const boxCoordinates = [Math.floor(coordinates[0]/N), Math.floor(coordinates[1]/N)];
 
     for (let i = boxCoordinates[0]*N; i < boxCoordinates[0]*N + N; i++) {
