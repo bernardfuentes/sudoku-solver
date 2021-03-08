@@ -1,27 +1,44 @@
+body {
+    font-size: 20px;
+}
+
+.container {
+    margin: 1rem;
+    display: flex;
+    justify-content: center;    
+}
+
+.t2 {
+    font-size: 30px;
+}
+
 table {
-    margin:1em auto;
+    margin:1.5em auto;
+    border: 2px solid black;
 }
 td {
-    height:30px;
-    width:30px;
-    border:1px solid;
+    height:50px;
+    width:50px;
+    border: 1px solid;
     text-align:center;
 }
 td:first-child {
-    border-left:solid;
+    border-left: solid;
 }
 td:nth-child(3n) {
-    border-right:solid ;
+    border-right: solid ;
 }
 tr:first-child {
-    border-top:solid;
+    border-top: solid;
 }
 tr:nth-child(3n) td {
-    border-bottom:solid ;
+    border-bottom: solid ;
 }
 
 td > input {
+    border: 0;
     width:12px;
+    font-size: 20px;
 }
 
 input.bold {
@@ -31,3 +48,30 @@ input.bold {
 input[type="text"]:disabled {
     background: #FFFFFF;
 }
+
+button {
+    padding: 0.5rem;
+    font-size: 20px;
+    min-width: 130px;
+    margin: 1rem; 
+}
+    
+.opacity-50 {
+    opacity:0.5;
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed;
+}
+
+.blue { 
+    background-color: blue;
+}
+
+.yellow {
+    background-color: yellow;
+} 
+
+.green {
+    background-color: greenyellow;
+}    

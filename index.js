@@ -9,7 +9,7 @@ const itemUsed = ['1','2','3','4','5','6','7','8','9'];
 
 drawGrid();
 
-displayMessage('Add manually (or randomly) some values');
+displayMessage('Add some values manually or randomly');
 
 /**
  * Draw 81 cells of the UI board
@@ -17,7 +17,7 @@ displayMessage('Add manually (or randomly) some values');
  * @return { boolean } Optional.
  */
 function drawGrid() {
-    let text= "<table class='flex'>";
+    let text= "<table class=''>";
     for (let i=0; i<=8; i++) {
         text+="<tr class=''>"
         for (let j=0; j<=8; j++) {
@@ -30,7 +30,7 @@ function drawGrid() {
         text+="</tr>";
     }
     text+="</table>";
-    document.getElementById('container').innerHTML = text;
+    document.getElementById('board').innerHTML = text;
     return true;
 }
 
@@ -228,9 +228,9 @@ function nextEmptyCell() {
 }
 
 /**
+ * Insert a new value in the board
  *
- *
- * @return { boolean } Optional.
+ * @return { boolean } Whether is possible to insert a new value in the board.
  */
 function random() {
     createChoices();
