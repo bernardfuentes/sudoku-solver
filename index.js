@@ -4,8 +4,9 @@
  */
 let board = Array.from(Array(9), () => new Array(9));
 let choices = Array.from(Array(9), () => new Array(9));
+const N = 4;
 
-const itemUsed = ['1','2','3','4','5','6','7','8','9'];
+const itemUsed = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','0'];
 
 drawGrid();
 
@@ -18,9 +19,9 @@ displayMessage('Add some values manually or randomly');
  */
 function drawGrid() {
     let text= "<table class=''>";
-    for (let i=0; i<=8; i++) {
+    for (let i=0; i<=N*N-1; i++) {
         text+="<tr class=''>"
-        for (let j=0; j<=8; j++) {
+        for (let j=0; j<=N*N-1; j++) {
             text+="<td>";
             const id = i + '-' + j;
             text+="<input class='choice' type='text' onchange='checkCell(" + i + "," + j
@@ -102,8 +103,8 @@ function getValuesFromUIBoard() {
  * @return { boolean } true Optional
  */
 function pushValuesToUIBoard() {
-    for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
+    for (let i = 0; i < N*N; i++) {
+        for (let j = 0; j < N*N; j++) {
             const id = i + '-' + j;
             document.getElementById(id).value = board[i][j]
         }
@@ -117,10 +118,10 @@ function pushValuesToUIBoard() {
  * @return { boolean } Can we start the solving process, or there is not a solution.
  */
 function createChoices() {
-    for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
+    for (let i = 0; i < N*N; i++) {
+        for (let j = 0; j < N*N; j++) {
             let choicesArray = [];
-            for (let c = 0; c < 9; c++) {
+            for (let c = 0; c < N*N; c++) {
                 if (isValid([i,j], itemUsed[c])) {
                     choicesArray.push(itemUsed[c]);
                 }
@@ -197,10 +198,10 @@ function isValid(coordinates, value) {
     }
 
     // Checking 3x3 box
-    const boxCoordinates = [Math.floor(coordinates[0]/3), Math.floor(coordinates[1]/3)];
+    const boxCoordinates = [Math.floor(coordinates[0]/N), Math.floor(coordinates[1]/N)];
 
-    for (let i = boxCoordinates[0]*3; i < boxCoordinates[0]*3 + 3; i++) {
-        for (let j = boxCoordinates[1]*3; j < boxCoordinates[1]*3 + 3; j++) {
+    for (let i = boxCoordinates[0]*N; i < boxCoordinates[0]*N + N; i++) {
+        for (let j = boxCoordinates[1]*N; j < boxCoordinates[1]*N + N; j++) {
             if (board[i][j] === val && (coordinates[0] !== i || coordinates[1] !== j) && val !== '') {
                 return false
             }
@@ -217,8 +218,8 @@ function isValid(coordinates, value) {
  * @return { boolean } the cell coordinate / false if no empty cell available.
  */
 function nextEmptyCell() {
-    for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
+    for (let i = 0; i < N*N; i++) {
+        for (let j = 0; j < N*N; j++) {
             if (board[i][j] === '') {
                 return [i,j]
             }
