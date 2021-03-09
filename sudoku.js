@@ -11,13 +11,29 @@ let board = Array.from(Array(N*N), () => new Array(N*N));
 // Store several choices available
 let choices = Array.from(Array(N*N), () => new Array(N*N));
 
+// Store current board state
+const boardTest3x3 =
+    [['9','','4','','','','2','','6'],
+     ['','5','','','4','9','','',''],
+     ['','','','','','','','',''],
+     ['3','','','','','2','','1',''],
+     ['','6','1','','','','','','9'],
+     ['','','','','8','5','','',''],
+     ['','','','','','','','5',''],
+     ['7','','','2','1','8','','',''],
+     ['1','9','','7','','','','','']];
+
 // Potential choices on each cell
 const itemUsed = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','0'];
 
 // Insert the board table into the UI
 drawGrid();
 
-displayMessage('Add some values manually or randomly');
+if (N !== 3) {
+    document.getElementById('example').classList.add('hidden');
+}
+
+displayMessage('Add some values manually, randomly, or choose our example');
 
 /**
  * Draw N*N*N*N cells of the UI board
@@ -75,6 +91,21 @@ function reset() {
     displayMessage('');
     getValuesFromUIBoard();
     return true;
+}
+
+/**
+ * Fill up the board with an specific example.
+ *
+ * @return { boolean } Optional.
+ */
+function example() {
+    for (let i = 0; i < N*N; i++) {
+        for (let j = 0; j < N * N; j++) {
+            board[i][j] = boardTest3x3[i][j];
+        }
+    }
+    displayMessage('');
+    pushValuesToUIBoard();
 }
 
 

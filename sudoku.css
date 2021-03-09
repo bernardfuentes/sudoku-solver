@@ -68,13 +68,21 @@ button {
 }
 
 .blue { 
-    background-color: blue;
+    background-color: cyan;
 }
 
 .yellow {
     background-color: yellow;
-} 
+}
+
+.white {
+    background-color: white;
+}
 
 .green {
     background-color: greenyellow;
-}    
+}
+
+.hidden {
+    display: none;
+}
