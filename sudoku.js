@@ -5,12 +5,16 @@
 // Box size and number of boxes
 const N = 3;
 
+// Arrays used for the main algorithm 
+// Store current board state
 let board = Array.from(Array(N*N), () => new Array(N*N));
+// Store several choices available
 let choices = Array.from(Array(N*N), () => new Array(N*N));
 
-
+// Potential choices on each cell
 const itemUsed = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','0'];
 
+// Insert the board table into the UI
 drawGrid();
 
 displayMessage('Add some values manually or randomly');
