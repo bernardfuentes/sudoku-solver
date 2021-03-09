@@ -106,6 +106,7 @@ function example() {
     }
     displayMessage('');
     pushValuesToUIBoard();
+    return true;
 }
 
 
