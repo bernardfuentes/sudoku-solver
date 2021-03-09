@@ -21,21 +21,30 @@ displayMessage('Add some values manually or randomly');
  * @return { boolean } Optional.
  */
 function drawGrid() {
-    let text= "<div class='board'>";
-    for (let i=0; i<=N*N-1; i++) {
-        text+="<div class='row'>"
-        for (let j=0; j<=N*N-1; j++) {
-            text+="<div class='cell'>";
+    let text= "<table class=''>";
+    for (let i=0; i<N*N; i++) {
+        mediumLineClass = '';
+        if (i > 0 && (i+1)%N === 0) {
+            mediumLineClass = "medium-row-line";
+        }
+        text+="<tr class='"+ mediumLineClass +"'>";
+        for (let j=0; j<N*N; j++) {
+            mediumLineClass = '';
+            if (j > 0 && (j+1)%N === 0) {
+                mediumLineClass = "medium-column-line";
+            }
+            text+="<td class='"+ mediumLineClass +"'>";
             const id = i + '-' + j;
             text+="<input class='choice' type='text' onchange='checkCell(" + i + "," + j
                 + ")' maxlength='1' size='1' id='" + id + "' name='" + id + "' value='' />";
-            text+="</div>";
+            text+="</td>";
         }
-        text+="</div>";
+        text+="</tr>";
     }
-    text+="</div>";
+    text+="</table>";
     document.getElementById('board').innerHTML = text;
     return true;
+
 }
 
 /**

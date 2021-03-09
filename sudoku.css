@@ -12,41 +12,30 @@ body {
     font-size: 30px;
 }
 
-.board {
+/* Second Method */
+table {
     margin:1.5em auto;
-    border: 2px solid black;
-    display: flex;
-    flex-wrap: wrap;
-    flex-basis: 25%;
-}
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    flex-basis: 25%;
-}
-
-.cell {
-
-}
-
-td {
-    height:50px;
-    width:50px;
-    border: 1px solid;
-    text-align:center;
-}
-td:first-child {
-    border-left: solid;
-}
-td:nth-child(3n) {
-    border-right: solid ;
+    border-collapse: collapse;
+    font-family: Calibri, sans-serif;
 }
 tr:first-child {
-    border-top: solid;
+    border-top: solid medium;
 }
-tr:nth-child(3n) td {
-    border-bottom: solid ;
+.medium-row-line {
+    border-bottom: solid medium;
+}
+td:first-child {
+    border-left: solid medium;
+}
+.medium-column-line {
+    border-right: solid medium;
+}
+td {
+    border: solid thin;
+    height:50px;
+    width:50px;
+    text-align: center;
+    padding: 0;
 }
 
 td > input {
