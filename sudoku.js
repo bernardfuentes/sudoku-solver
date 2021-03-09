@@ -116,11 +116,14 @@ function example() {
  * @return { boolean } Have we found a solution?
  */
 function resolve() {
+    let start = performance.now();
     displayMessage('');
     getValuesFromUIBoard();
     if (createChoices()) {
         if (backTrackSolve()) {
             pushValuesToUIBoard();
+            let end = performance.now();
+            console.log('The resolutiom took ' + (end - start) + ' milliseconds to execute.');
             return true;
         }
     }
