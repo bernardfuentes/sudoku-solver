@@ -3,7 +3,7 @@
  *
  */
 // Box size and number of boxes
-const N = 3;
+const N = 5;
 
 // Arrays used for the main algorithm 
 // Store current board state
@@ -25,6 +25,11 @@ const boardTest3x3 =
 
 // Potential choices on each cell
 const itemUsed = ['1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','0'];
+
+if (![2,3,4].includes(N)) {
+    displayMessage('You use a wrong value for N.');
+    throw false;
+}
 
 // Insert the board table into the UI
 drawGrid();
