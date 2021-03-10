@@ -116,14 +116,14 @@ function example() {
  * @return { boolean } Have we found a solution?
  */
 function resolve() {
-    let start = performance.now();
+    console.time('resolve');
     displayMessage('');
     getValuesFromUIBoard();
     if (createChoices()) {
         if (backTrackSolve()) {
             pushValuesToUIBoard();
             let end = performance.now();
-            console.log('The resolutiom took ' + (end - start) + ' milliseconds to execute.');
+            console.timeEnd('resolve');
             return true;
         }
     }
@@ -174,7 +174,7 @@ function createChoices() {
             let choicesArray = [];
             for (let c = 0; c < N*N; c++) {
                 if (isValid([i,j], itemUsed[c])) {
-                    choicesArray.push(itemUsed[c]);
+                    choicesArray = [itemUsed[c], ...choicesArray];
                 }
             }
             if (choicesArray.length === 0) {
@@ -292,7 +292,7 @@ function random() {
         document.getElementById(cell.name).classList.remove('bold');
         if (board[coordinates[0]][coordinates[1]] === undefined 
             || board[coordinates[0]][coordinates[1]] === '') {
-            emptyCells.push(coordinates);
+            emptyCells = [coordinates, ...emptyCells]
         }
     });
     for (let i = emptyCells.length - 1; i > 0; i--) {
@@ -301,16 +301,15 @@ function random() {
     }
     while (emptyCells.length) {
         let randomCell = emptyCells[0];
-        for (let i = 0; i < choices[randomCell[0]][randomCell[1]].length; i++) {
-            const item = choices[randomCell[0]][randomCell[1]][i];
-            if (isValid(randomCell, item)) {
+        for (let cellChoices of choices[randomCell[0]][randomCell[1]]) {
+            if (isValid(randomCell, cellChoices)) {
                 const id = randomCell[0] + '-' + randomCell[1];
-                document.getElementById(id).value = item;
+                document.getElementById(id).value = cellChoices;
                 getValuesFromUIBoard();
                 return true;
             }
         }
-        emptyCells = emptyCells.shift();
+        emptyCells.shift();
     }
     return false
 }
@@ -326,10 +325,9 @@ function backTrackSolve() {
         return true
     } 
 
-    for (let i = 0; i < choices[cell[0]][cell[1]].length; i++) {
-        const item = choices[cell[0]][cell[1]][i];
-        if (isValid(cell, item)) {
-            board[cell[0]][cell[1]] = item;
+    for (let cellChoices of choices[cell[0]][cell[1]]) {
+        if (isValid(cell, cellChoices)) {
+            board[cell[0]][cell[1]] = cellChoices;
             if (backTrackSolve()) {
                 return true;
             }
