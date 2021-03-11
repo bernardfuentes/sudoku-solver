@@ -3,7 +3,7 @@
  *
  */
 // Box size and number of boxes
-const N = 5;
+const N = 3;
 
 // Arrays used for the main algorithm 
 // Store current board state
