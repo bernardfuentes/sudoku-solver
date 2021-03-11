@@ -177,17 +177,19 @@ function createChoices() {
     for (let i = 0; i < N*N; i++) {
         for (let j = 0; j < N*N; j++) {
             let choicesArray = [];
-            for (let c = 0; c < N*N; c++) {
-                if (isValid([i,j], itemUsed[c])) {
-                    choicesArray = [itemUsed[c], ...choicesArray];
+            if (board[i][j] === '') {
+                for (let c = 0; c < N*N; c++) {
+                    if (isValid([i,j], itemUsed[c])) {
+                        choicesArray = [itemUsed[c], ...choicesArray];
+                    }
                 }
-            }
-            if (choicesArray.length === 0) {
-                return false;
-            }
-            for (let i = choicesArray.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [choicesArray[i], choicesArray[j]] = [choicesArray[j], choicesArray[i]];
+                if (choicesArray.length === 0) {
+                    return false;
+                }
+                for (let i = choicesArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [choicesArray[i], choicesArray[j]] = [choicesArray[j], choicesArray[i]];
+                }
             }
             choices[i][j] = choicesArray
         }
