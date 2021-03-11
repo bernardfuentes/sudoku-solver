@@ -8,8 +8,13 @@ const N = 3;
 // Arrays used for the main algorithm 
 // Store current board state
 let board = Array.from(Array(N*N), () => new Array(N*N));
+
 // Store several choices available
 let choices = Array.from(Array(N*N), () => new Array(N*N));
+
+// Counter for solutions
+let counter = 0;
+
 
 // Store current board state
 const boardTest3x3 =
@@ -120,7 +125,7 @@ function example() {
  *
  * @return { boolean } Have we found a solution?
  */
-function resolve() {
+function resolveOneShot() {
     console.time('resolve');
     displayMessage('');
     getValuesFromUIBoard();
@@ -339,7 +344,61 @@ function backTrackSolve() {
             board[cell[0]][cell[1]] = '';
         }
     }
+    return false
+}
+
+/**
+ * Start solving ALL SOLUTIONS process. Call from UI
+ *
+ * @return { boolean } Have we found a solution?
+ */
+function resolveAll() {
+    counter = 0;
+    displayMessage('');
+    getValuesFromUIBoard();
+    if (createChoices()) {
+        backTrackSolveAllSolutions();
+    }
+    console.log(counter);
+}
+
+/**
+ * Solving process based on a backtrack technique + storing solution in Array
+ *
+ * @return { boolean } Have we found a solution?
+ */
+function backTrackSolveAllSolutions() {
+    let cell = nextEmptyCell();
+    if (cell === false) {
+        counter++;
+        return true
+
+    }
+    for (let cellChoices of choices[cell[0]][cell[1]]) {
+        if (isValid(cell, cellChoices)) {
+            board[cell[0]][cell[1]] = cellChoices;
+            if (backTrackSolveAllSolutions()) {
+                board[cell[0]][cell[1]] = ''
+            }
+            board[cell[0]][cell[1]] = '';
+        }
+    }
 
     return false
+
+
+}
+
+/**
+ * Store the solution in an array
+ *
+ * @return { promise }
+ */
+function storeSolution(localBoard) {
+    console.log(localBoard);
+    const solution = [...localBoard];
+    sudokus = [solution, ...sudokus];
+
+
 }
 
